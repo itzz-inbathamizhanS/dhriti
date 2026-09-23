@@ -1,2 +1,93 @@
-# dhriti
-DHṚTI — Bio-Inspired Adaptive Repair of Quantum Programs
+# DHṚTI (धृति) - Automated Quantum Program Repair
+
+DHṚTI is a complete, installable developer tool for automated quantum program repair. It leverages a novel Machine Learning (ML)-based repair operator selector to dynamically identify and apply the correct repair strategy for faulty quantum circuits.
+
+Unlike classical program repair which relies heavily on abstract syntax trees, DHṚTI uses a 24-dimensional Fault Feature Vector derived from the quantum circuit's intermediate representation (IR), topological features, and output deviations.
+
+## Features
+
+- **End-to-End Repair Pipeline:** From fault detection to verified repair.
+- **Spectrum-Based Fault Localization (SBFL):** Automatically identifies suspicious gates.
+- **ML Repair Selector:** Uses Random Forest (trained on circuit topology and fault features) to prioritize the most likely repair operators.
+- **8 Quantum Repair Operators:** Handles gate replacement, insertion, deletion, qubit reassignment, parameter modification, gate order swapping, measurement correction, and control-target swapping.
+- **Biologically Inspired Baselines:** Provides bio-pathway triage ablations to evaluate performance gains.
+
+## Installation
+
+Ensure you have Python 3.9+ installed.
+
+```bash
+git clone https://github.com/yourusername/dhriti.git
+cd dhriti
+pip install -e .
+```
+
+## CLI Usage
+
+DHṚTI provides a fully featured CLI for analyzing, diagnosing, and repairing QASM circuits.
+
+### 1. Analyze a Circuit
+Inspect the structure and gate composition of a QASM circuit.
+```bash
+dhriti analyze path/to/circuit.qasm
+```
+
+### 2. Diagnose Faults
+Detect if a circuit is faulty and localize the suspicious gates by comparing it against a reference circuit.
+```bash
+dhriti diagnose path/to/buggy.qasm --reference path/to/fixed.qasm
+```
+
+### 3. Repair a Circuit
+Run the end-to-end repair pipeline using the ML selector (or random/pathway baselines).
+```bash
+dhriti repair path/to/buggy.qasm --reference path/to/fixed.qasm --selector ml
+```
+
+### 4. Train the ML Model
+Train the Random Forest selector on synthetically generated mutated circuits.
+```bash
+dhriti train --min-qubits 3 --max-qubits 15
+```
+
+### 5. Benchmark Performance
+Run large-scale baseline evaluations or full k-fold cross-validation.
+```bash
+dhriti benchmark --kfold
+```
+
+## Reproducing the Experiments
+
+All experimental data and results from the paper can be reproduced using the built-in tooling:
+
+1. **Generate Dataset and Train Model:**
+   ```bash
+   dhriti train --min-qubits 3 --max-qubits 15
+   ```
+   This generates a large synthetic dataset of varied quantum circuits (QFT, QAOA, GHZ, VQE, etc.) and trains the `ml_model.joblib`.
+
+2. **Run K-Fold Cross-Validation:**
+   ```bash
+   python experiments/run_kfold.py
+   ```
+   This will run a rigorous 5-fold stratified cross-validation on the dataset (1,131 records) comparing Random, Frequency, Bio-Pathway, and ML selectors.
+
+3. **Run Bugs4Q Real-World Evaluation:**
+   ```bash
+   python experiments/bugs4q_eval.py
+   ```
+   This evaluates the trained ML model on modernized semantic bugs extracted from the real-world Bugs4Q database.
+
+## Architecture
+
+1. **Parser:** Converts `QuantumCircuit` to `CircuitIR` (DAG wrapper).
+2. **Oracle:** Detects faults using Bhattacharyya fidelity and KL divergence.
+3. **Localizer:** Uses Spectrum-Based Fault Localization (SBFL) via gate-removal mutants.
+4. **Feature Extractor:** Builds a 24-dimensional topological/fault feature vector.
+5. **Selector:** ML model (or baseline) predicts the best `RepairOperator`.
+6. **Generator:** Applies the recommended operators to generate candidate circuits.
+7. **Validator:** Ranks valid repairs based on output fidelity.
+
+## License
+
+This project is licensed under the MIT License.
