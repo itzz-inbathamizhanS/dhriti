@@ -1,0 +1,28 @@
+[
+  {
+    "bug": "bug_1_wrong_gate",
+    "success": true,
+    "operator": "gate_replacement",
+    "fidelity": 1.0,
+    "search_cost": 110
+  },
+  {
+    "bug": "bug_2_control_target_swap",
+    "success": false,
+    "reason": "no_valid_repair"
+  },
+  {
+    "bug": "bug_3_missing_gate",
+    "success": true,
+    "operator": "gate_insertion",
+    "fidelity": 1.0,
+    "search_cost": 49
+  },
+  {
+    "bug": "bug_4_extra_gate",
+    "success": true,
+    "operator": "gate_insertion",
+    "fidelity": 1.0,
+    "search_cost": 1
+  }
+]
