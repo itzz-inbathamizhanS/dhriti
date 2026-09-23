@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dhriti"
+version = "0.1.0"
+description = "Bio-inspired adaptive repair framework for quantum programs."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Research License"}
+authors = [
+    {name = "Inbathamizhan S"}
+]
+dependencies = [
+    "qiskit>=1.0",
+    "numpy>=1.24",
+    "scikit-learn>=1.3",
+    "joblib>=1.3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov",
+]
+
+[project.scripts]
+dhriti = "dhriti.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
