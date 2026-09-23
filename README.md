@@ -1,4 +1,4 @@
-# DHṚTI (धृति) - Automated Quantum Program Repair
+# DHRITI- Automated Quantum Program Repair
 
 DHṚTI is a complete, installable developer tool for automated quantum program repair. It leverages a novel Machine Learning (ML)-based repair operator selector to dynamically identify and apply the correct repair strategy for faulty quantum circuits.
 
